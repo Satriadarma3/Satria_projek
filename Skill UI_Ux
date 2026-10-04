@@ -1,0 +1,41 @@
+---
+name: ui-ux-review
+description: Use when reviewing, polishing, auditing, or improving the UI/UX of a screen in this project. Triggers on "review this screen", "improve the UI", "polish the design", "audit accessibility", "make this look better".
+---
+
+# UI/UX Review
+
+Give the reviewer a short, prioritized list of concrete fixes — not a design lecture. The reviewer is likely non-technical: name screens, sections, and behaviors, not file paths or class names.
+
+## Process
+
+1. Read the route/component files for the screen under review and `src/styles.css` for the current design tokens.
+2. If the screen is visual, drive Playwright via shell to see the rendered result at desktop and mobile widths before judging anything. A static read of the code lies about hierarchy and spacing.
+3. Audit against the checklist below. Only report findings that are actually wrong for this screen — do not pad the list.
+4. Report a prioritized list: High / Medium / Low impact. Each finding names the visible element, what is wrong, and the suggested fix.
+5. Apply fixes only after the reviewer approves them. Never edit the screen and the report in the same step.
+
+## Checklist
+
+Audit these in order; a screen with a broken earlier item rarely needs comments on later ones.
+
+1. **Visual hierarchy** — Is the primary action the most prominent element? Does the eye land on what the screen is for? One h1, clear grouping, spacing that separates concerns.
+2. **Token consistency** — Colors, radius, and shadows come from the semantic tokens in `src/styles.css`. Hardcoded color utilities (`text-white`, `bg-[#...]`) bypass theming and break dark mode — flag every one.
+3. **Responsive behavior** — Usable at 375px and 1280px. No horizontal scroll, no cramped tap targets, no content hidden behind a breakpoint mistake.
+4. **Accessibility** — Contrast meets AA, every input has a visible label or accessible name, focus states are visible, interactive elements are reachable by keyboard.
+5. **Copy** — Button labels say what happens ("Save changes", not "OK"). Empty and error states are written, not left as placeholder text.
+
+## Output format
+
+```
+High impact
+- [Element] — problem → fix
+
+Medium impact
+- ...
+
+Low impact
+- ...
+```
+
+If a screen is fine, say so and stop. Do not invent findings to look thorough.
